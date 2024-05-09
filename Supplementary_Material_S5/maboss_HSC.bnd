@@ -1,0 +1,126 @@
+node Oxygen
+{
+  rate_up = 0.0;
+  rate_down = 0.0;
+}
+node Runx1
+{
+  logic = (PU1 | GATA2 | Runx1) & ! Ikzf1 ;
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node Meis1
+{
+  logic = (Meis1 | Runx1 | PU1 ) & ! Gfi1;
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node HIF1
+{
+  logic = (! Oxygen & O2 & ! (p53|FOXO3 | AMPK)) |(!Oxygen & Meis1);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node FOXO3
+{
+  logic = ((AMPK & (HIF1 |p53)) & !( AKT |Cebpa));
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node p53
+{
+  logic = HIF1 & ! ( AKT | GATA1 | PU1 );
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node GATA2
+{
+  logic = (GATA2 |p53 ) & ! ( GATA1 | PU1 | Gfi1 );
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node GATA1
+{
+  logic = (GATA1 | GATA2 | AKT |Runx1) & ! ( PU1 | p53 | Ikzf1 );
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node PU1
+{
+  logic = (PU1 | Runx1 |(Cebpa & Ikzf1)) &! (GATA1 | GATA2|Gfi1);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node Cebpa
+{
+  logic = (PU1 & Runx1) & ! Mef2c;
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node Ikzf1
+{
+  logic = (Mef2c |Ikzf1|Runx1 ) & ! (Cebpa | PU1 | GATA1);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node Gfi1 
+{
+  logic = (Ikzf1 | Cebpa) & ! (PU1|p53);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node Mef2c
+{
+  logic = PU1 & ! Cebpa;
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node mTOR
+{
+  logic = AKT & (!AMPK & !p53);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node AMPK
+{
+  logic = (! AKT | !OXPHOS | ! HIF1) & (p53);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node AKT
+{
+  logic = (H2O2) | !( p53 | FOXO3);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node H2O2
+{
+  logic = (SOD & O2 & ! Antioxidant) | ((GATA1 | HIF1 | PU1) & ! Antioxidant) | (OXPHOS & ! Antioxidant);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node O2
+{
+  logic = ! SOD | OXPHOS ;
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node SOD
+{
+  logic = (p53 | FOXO3) ;
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node Antioxidant
+{
+  logic = (p53 | FOXO3 );
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+node OXPHOS
+{
+  logic = (mTOR | AKT) & ! (FOXO3 | HIF1);
+  rate_up = @logic ? 1.0 : 0.0;
+  rate_down = @logic ? 0.0 : 1.0;
+}
+
